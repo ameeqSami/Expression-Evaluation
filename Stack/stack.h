@@ -1,10 +1,11 @@
 #include<iostream>
 #include"node.h"
-#include"Operator/operator.h"
+#include"../Operator/operator.h"
 using namespace std;
+
 class Stack{
     private: 
-    Node* Head;
+    StackNS::Node* Head;
     int size;
 
 

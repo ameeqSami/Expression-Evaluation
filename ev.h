@@ -16,11 +16,13 @@ class PostFix{
 
     public:
     PostFix();
-    string evaluateExpression(Queue expr);
+    vector<string> stringToVector(string expr);
+    string evaluateExpression(string expr);
     void setOperator(string op, bool assoc, int prec);
     void displayAllOperators();
     int isOperator(string a);
-    
-}
+    int findOperator(string a);
 
+    
+};
 

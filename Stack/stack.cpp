@@ -1,5 +1,7 @@
 #include "stack.h"
 
+using namespace StackNS;
+
 Stack::Stack()
 {
     Head = nullptr;
@@ -69,7 +71,7 @@ void Stack::display()
     Stack temp;
     while (Stacksize())
     {
-        cout<<top()<<endl;
+        top().displayOperatorInfo();
         temp.push(top());
         pop();
     }

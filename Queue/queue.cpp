@@ -1,5 +1,7 @@
 #include "queue.h"
 
+using namespace QueueNS;
+
 Queue::Queue()
 {
     Head = nullptr;

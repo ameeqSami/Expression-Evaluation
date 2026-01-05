@@ -1,4 +1,7 @@
 #include "node.h"
+
+using namespace QueueNS;
+
 Node::Node(string d, Node *n)
 {
     setData(d);

@@ -6,8 +6,8 @@ using namespace std;
 
 class Queue{
     private: 
-    Node* Head;
-    Node* Tail;
+    QueueNS::Node* Head;
+    QueueNS::Node* Tail;
     int count = 0;
 
     public: 

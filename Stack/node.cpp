@@ -1,4 +1,7 @@
 #include "node.h"
+
+using namespace StackNS;
+
 Node::Node(Operator d, Node *n)
 {
     setData(d);
@@ -17,5 +20,5 @@ Operator Node::getData()
 
 void Node::display()
 {
-    cout<<getData()<<endl;
+    getData().displayOperatorInfo();
 }
