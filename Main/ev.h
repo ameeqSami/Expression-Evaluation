@@ -1,8 +1,8 @@
 #include<iostream>
 #include<vector>
-#include"Stack/stack.h"
-#include"Queue/queue.h"
-#include"Operator/operator.h"
+#include"../Stack/stack.h"
+#include"../Queue/queue.h"
+#include"../Operator/operator.h"
 
 class PostFix{
     private:

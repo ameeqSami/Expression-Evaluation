@@ -53,6 +53,11 @@ bool Queue::dequeue()
     {
             Node* toDelete = Head;
             Head = Head->next;
+            
+            // If queue is now empty, reset Tail too
+            if (Head == nullptr)
+                Tail = nullptr;
+            
             delete toDelete;
             count--;
             return true;
@@ -72,7 +77,7 @@ void Queue::display()
     int size = count;
     for (int i = 0; i < size; i++)
     {
-        cout<<top();
+        cout<<top()<<endl;
         enqueue(top());
         dequeue();
     }
