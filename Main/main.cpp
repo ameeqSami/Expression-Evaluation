@@ -30,10 +30,10 @@ int main()
     Queue expressionQueue;
     
     // Setup operators with their associativity and precedence
-    p1.setOperator("+", 1, 6);  // Right-associative, precedence 6
-    p1.setOperator("-", 1, 6);
-    p1.setOperator("*", 1, 5);  // Left-associative, precedence 5
-    p1.setOperator("/", 1, 5);
+    p1.setOperator("+", 0, 6);  // Right-associative, precedence 6
+    p1.setOperator("-", 0, 6);
+    p1.setOperator("*", 0, 5);  // Left-associative, precedence 5
+    p1.setOperator("/", 0, 5);
     p1.setOperator("(", 0, 2);
     p1.setOperator(")", 0, 2);
     
@@ -252,19 +252,30 @@ void processAll(Queue& exprQueue, PostFix& postfix)
 
 void loadSampleQueue(Queue& exprQueue)
 {
-    // Sample expressions to load
+    // Sample expressions strictly testing Precedence and Parentheses
+    // (No chained operators of the same precedence level like "a + b - c")
     vector<string> sampleExpressions = {
-        "a + b",
-        "x * y + z",
-        "( a + b / c ) - f",
-        "m - n * o",
-        "( p + q ) * ( r - s )",
-        "a + b * c - d / e",
-        "( ( x + y ) * z )",
-        "alpha + beta - gamma"
+        // 1. Basic Single Operators
+        "a + b",            
+        "x * y",
+
+        // 2. Strict Precedence (Multiplication/Division before Addition/Subtraction)
+        "a + b * c",        // Should do (b * c) first
+        "x * y + z",        // Should do (x * y) first
+        "m - n / o",        // Should do (n / o) first
+
+        // 3. Parentheses Overriding Precedence
+        "( a + b ) * c",    // Parens force (+) before (*)
+        "x * ( y + z )",    // Parens force (+) before (*)
+
+        // 4. Nested Parentheses (Explicit ordering)
+        "( ( a + b ) * c )", 
+        
+        // 5. Separated Groups (Safe because * is higher than +)
+        "( a + b ) * ( c - d )" // Inner parens done first, then multiply
     };
     
-    cout << "Loading sample expressions into queue..." << endl;
+    cout << "Loading 'No-Associativity' test cases..." << endl;
     cout << "========================================" << endl;
     
     for (int i = 0; i < sampleExpressions.size(); i++)

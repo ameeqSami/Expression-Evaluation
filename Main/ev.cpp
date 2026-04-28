@@ -57,64 +57,63 @@ vector<string> PostFix::stringToVector(string expr){
 
 string PostFix::evaluateExpression(string expr)
 {
-
     vector<string> tokens = stringToVector(expr);
     string output;
     Stack stk;
 
-    while (!tokens.empty())
+    // OPTIMIZATION: Use an index 'i' instead of erasing from the vector (which is slow)
+    for (int i = 0; i < tokens.size(); i++)
     {
+        string token = tokens[i];
+        int exprOpr = isOperator(token);
 
-        int exprOpr = isOperator(tokens.front());
-
-        if (exprOpr == -1)  // It's an operand (NOT an operator)
+        if (exprOpr == -1) // It is an Operand
         {
-            output += tokens.front() + " ";  // FIXED: Added space
+            output += token + " ";
         }
-        else
+        else // It is an Operator
         {
-            if (tokens.front() == "("){
+            if (token == "(") {
                 stk.push(oprs[exprOpr]);
             }
-            else if (tokens.front() == ")")
+            else if (token == ")") {
+                while (!stk.isEmpty() && stk.top().getOperatorName() != "(") {
+                    output += stk.top().getOperatorName() + " ";
+                    stk.pop();
+                }
+                if (!stk.isEmpty()) stk.pop(); // Pop the "("
+            }
+            else 
             {
+                // PRECEDENCE HANDLING (Lower Value = Higher Precedence)
                 while (!stk.isEmpty() && stk.top().getOperatorName() != "(")
                 {
-                    output += stk.top().getOperatorName() + " ";
-                    stk.pop();
-                }
-                stk.pop(); //  removing opening braket from stack
-            }
-            else if (stk.isEmpty()){
-                stk.push(oprs[exprOpr]);}
+                    int topPrec = stk.top().getPrecedence();
+                    int currPrec = oprs[exprOpr].getPrecedence();
+                    bool isRightAssoc = oprs[exprOpr].getAssociativity(); 
 
-            else if (stk.top().getOperatorName() == "(" ){
-                stk.push(oprs[exprOpr]);}
-
-            else if (stk.top().getPrecedence() > oprs[exprOpr].getPrecedence())
+                    // POP CONDITION:
+                    // 1. Top is STRICTLY STRONGER (Lower number) than Current
+                    //    Ex: Top is '*' (5), Current is '+' (6). 5 < 6. Pop '*'.
+                    // 2. Precedence is EQUAL, and operator is LEFT Associative
+                    //    Ex: Top is '+' (6), Current is '+' (6). Pop top first.
+                    
+                    if (topPrec < currPrec || (topPrec == currPrec && !isRightAssoc)) 
                     {
-                stk.push(oprs[exprOpr]);
-                    }
-            else if (stk.top().getPrecedence() == oprs[exprOpr].getPrecedence() && !oprs[exprOpr].getAssociativity())
-                        {
-                stk.push(oprs[exprOpr]);
-                    }
-                    else
+                        output += stk.top().getOperatorName() + " ";
+                        stk.pop();
+                    } 
+                    else 
                     {
-                while (!stk.isEmpty() && stk.top().getOperatorName() != "(" &&  stk.top().getPrecedence() <= oprs[exprOpr].getPrecedence())
-                {
-                    if (stk.top().getPrecedence() == oprs[exprOpr].getPrecedence() && (oprs[exprOpr].getAssociativity()))
-                        break;
-                    output += stk.top().getOperatorName() + " ";
-                    stk.pop();
+                        break; // Stop popping if Top is weaker
+                    }
                 }
                 stk.push(oprs[exprOpr]);
             }
         }
-        tokens.erase(tokens.begin());
     }
 
-    // Pop remaining operators from stack
+    // Pop remaining operators
     while (!stk.isEmpty())
     {
         output += stk.top().getOperatorName() + " ";

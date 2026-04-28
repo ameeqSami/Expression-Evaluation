@@ -36,7 +36,7 @@ Navigate to the `Main` directory and compile with all dependencies:
 
 ```bash
 cd Main
-g++ comprehensive_test.cpp ev.cpp ../Queue/queue.cpp ../Queue/node.cpp ../Stack/stack.cpp ../Stack/node.cpp ../Operator/operator.cpp -o comprehensive_test.exe -I..
+g++ ev.cpp ../Queue/queue.cpp ../Queue/node.cpp ../Stack/stack.cpp ../Stack/node.cpp ../Operator/operator.cpp -o run.exe -I..
 ```
 
 ### Running the Program
